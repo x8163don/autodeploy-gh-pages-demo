@@ -1,29 +1,54 @@
-# test-git-page
+# How to automatically deploy project build result to git-page?
 
-## Project setup
-```
-yarn install
-```
+## Technique
+* Vue (for demo website)
+* Travis CI
 
-### Compiles and hot-reloads for development
+## Project aspect
+1. Add `.travis.yml` file in project
+1. Code as following
 ```
-yarn run serve
-```
+language: node_js
+node_js: stable
 
-### Compiles and minifies for production
-```
-yarn run build
-```
+cache:
+  directories:
+    - node_modules
 
-### Run your tests
-```
-yarn run test
-```
+before_deploy:
+  - "npm run build"
 
-### Lints and fixes files
-```
-yarn run lint
-```
+script: echo "npm test temporarily disabled"
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  local_dir: dist
+  on:
+    branch: master
+    
+```
+ Notice: for quickly demo I skip test phase on npm if you need this phase. you can remove `script: echo "npm test temporarily disabled"` line.
+
+## Git Token setup
+1. On github go here: https://github.com/settings/tokens 
+1. Add git token for Travis CI 
+   ![Token](./img/2020-02-03-18.44.39.png)
+   make sure new token has public_repo authentication
+
+1. Copy the token (string in the green background)
+
+## Travis CI setup
+
+1. connect & activity reop
+1. more options > settings
+1. add environment variable key as "GITHUB_TOKEN" and value as token string
+
+![env](./img/2020-02-03-18.56.34.png)
+
+## Finish!
+whenever the master branch has new commit then Travis CI will auto build & deploy all files of under dist folder to `gh-pages` branch
+
+then you can connect to `https://{your_account}.gitpage.io/{repo_name}` check result
+
