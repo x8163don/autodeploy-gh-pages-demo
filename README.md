@@ -50,5 +50,8 @@ deploy:
 ## Finish!
 whenever the master branch has new commit then Travis CI will auto build & deploy all files of under dist folder to `gh-pages` branch
 
-then you can connect to `https://{your_account}.gitpage.io/{repo_name}` check result
+then you can connect to `https://{your_account}.github.io/{repo_name}` check result
 
+![Travis CI](./img/2020-02-04-10.12.08.png)
+
+![result](./img/2020-02-04-10.12.13.png)
